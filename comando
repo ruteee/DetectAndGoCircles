@@ -1,0 +1,1 @@
+ g++ `pkg-config --cflags opencv` -o circles houghcircles.cpp `pkg-config --libs opencv`
