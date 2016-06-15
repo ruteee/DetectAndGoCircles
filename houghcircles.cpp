@@ -190,18 +190,17 @@ void capturar_ciculos(vector<Vec3f> &circulos) {
 	if (!capture) {
 		cout << "No camera detected" << endl;
 	}
-	IplImage* iplImg = cvQueryFrame(capture);
-	img = iplImg;
+	img = cvQueryFrame(capture);
+	// img = iplImg;
 
 	imshow("Camera", img);
 
 	waitKey(0);
 
-	cvReleaseCapture( &capture );
-	cvDestroyWindow( "result" );
+	// cvReleaseCapture( &capture );
 
-	cvtColor(img, hsv_img,COLOR_BGR2HSV);
-	GaussianBlur(hsv_img,img_new,  Size(9, 9), 0.5, 0.5);
+	GaussianBlur(img, img_new,  Size(9, 9), 0.5, 0.5);
+	cvtColor(img_new, hsv_img, COLOR_BGR2HSV);
 
 //-------------------------------Cores----------------------------------------------------
     Mat red;
@@ -211,19 +210,19 @@ void capturar_ciculos(vector<Vec3f> &circulos) {
     inRange(hsv_img, Scalar(24, 100, 200),Scalar(30, 255, 255), yellow);
     GaussianBlur(yellow, yellow, Size(9, 9), 4, 4);
     Mat cyan;
-    inRange(img_new, Scalar(90, 120, 250), Scalar(120,255,255), cyan);
+    inRange(hsv_img, Scalar(90, 120, 250), Scalar(120,255,255), cyan);
     GaussianBlur(cyan,cyan,  Size(9, 9), 4, 4);
     Mat magenta;
-    inRange(img_new, Scalar(150, 89, 180),Scalar(160, 146, 200), magenta);
+    inRange(hsv_img, Scalar(150, 89, 165),Scalar(160, 146, 200), magenta);
     GaussianBlur(magenta, magenta, Size(9, 9), 4, 4);
     Mat black;
-    inRange(img_new, Scalar(80, 40, 130),Scalar(130, 100, 170), black);
+    inRange(hsv_img, Scalar(80, 40, 130),Scalar(132, 100, 170), black);
     GaussianBlur(black, black, Size(9, 9), 4, 4);
     Mat blue;
-    inRange(img_new, Scalar(85, 110, 200), Scalar(112,220,245), blue);
+    inRange(hsv_img, Scalar(85, 110, 200), Scalar(112,220,245), blue);
     GaussianBlur(blue,blue,  Size(9, 9), 4, 4);
     Mat green;
-    inRange(img_new, Scalar(70, 60, 180), Scalar(95,115,255), green);
+    inRange(hsv_img, Scalar(70, 60, 180), Scalar(95,115,255), green);
     GaussianBlur(green,green,  Size(9, 9), 4, 4);
 //-------------------------------Fim - Cores---------------------------------------------------- //
 //--------------------------------Circles-------------------------------------------------------//
@@ -252,30 +251,32 @@ void capturar_ciculos(vector<Vec3f> &circulos) {
 	circulos[5] = circles[0];
 	HoughCircles(black, circles, CV_HOUGH_GRADIENT, 1, 10, 100, 30, 1, 25);
 	circulos[6] = circles[0];
+	printf("%lu\n", circles.size());
 //-------------------------------Fim - Circles-------------------------------------------//
 	if (DEBUG) {
 		// Janelas com imagens
-		circle(blue, Point(circulos[0][0], circulos[0][1]), circulos[0][2], Scalar(0,0,255), 3, CV_AA);
-		circle(blue, Point(circulos[0][0], circulos[0][1]), 2, Scalar(0,255,0), 3, CV_AA);
-		circle(magenta, Point(circulos[1][0], circulos[1][1]), circulos[1][2], Scalar(0,0,255), 3, CV_AA);
-		circle(magenta, Point(circulos[1][0], circulos[1][1]), 2, Scalar(0,255,0), 3, CV_AA);
-		circle(green, Point(circulos[2][0], circulos[2][1]), circulos[2][2], Scalar(0,0,255), 3, CV_AA);
-		circle(green, Point(circulos[2][0], circulos[2][1]), 2, Scalar(0,255,0), 3, CV_AA);
-		circle(cyan, Point(circulos[3][0], circulos[3][1]), circulos[3][2], Scalar(0,0,255), 3, CV_AA);
-		circle(cyan, Point(circulos[3][0], circulos[3][1]), 2, Scalar(0,255,0), 3, CV_AA);
-		circle(yellow, Point(circulos[4][0], circulos[4][1]), circulos[4][2], Scalar(0,0,255), 3, CV_AA);
-		circle(yellow, Point(circulos[4][0], circulos[4][1]), 2, Scalar(0,255,0), 3, CV_AA);
-		circle(red, Point(circulos[5][0], circulos[5][1]), circulos[5][2], Scalar(0,0,255), 3, CV_AA);
-		circle(red, Point(circulos[5][0], circulos[5][1]), 2, Scalar(0,255,0), 3, CV_AA);
-		circle(black, Point(circulos[6][0], circulos[6][1]), circulos[6][2], Scalar(0,0,255), 3, CV_AA);
-		circle(black, Point(circulos[6][0], circulos[6][1]), 2, Scalar(0,255,0), 3, CV_AA);
+		circle(img, 	Point(circulos[0][0], circulos[0][1]), circulos[0][2],	Scalar(0,0,255), 3, CV_AA);
+		circle(img, 	Point(circulos[0][0], circulos[0][1]), 2, 				Scalar(0,255,0), 3, CV_AA);
+		circle(img, 	Point(circulos[1][0], circulos[1][1]), circulos[1][2],	Scalar(0,0,255), 3, CV_AA);
+		circle(img, 	Point(circulos[1][0], circulos[1][1]), 2,				Scalar(0,255,0), 3, CV_AA);
+		circle(img, 	Point(circulos[2][0], circulos[2][1]), circulos[2][2],	Scalar(0,0,255), 3, CV_AA);
+		circle(img, 	Point(circulos[2][0], circulos[2][1]), 2,				Scalar(0,255,0), 3, CV_AA);
+		circle(img, 	Point(circulos[3][0], circulos[3][1]), circulos[3][2],	Scalar(0,0,255), 3, CV_AA);
+		circle(img, 	Point(circulos[3][0], circulos[3][1]), 2, 				Scalar(0,255,0), 3, CV_AA);
+		circle(img, 	Point(circulos[4][0], circulos[4][1]), circulos[4][2],	Scalar(0,0,255), 3, CV_AA);
+		circle(img, 	Point(circulos[4][0], circulos[4][1]), 2, 				Scalar(0,255,0), 3, CV_AA);
+		circle(img, 	Point(circulos[5][0], circulos[5][1]), circulos[5][2],	Scalar(0,0,255), 3, CV_AA);
+		circle(img, 	Point(circulos[5][0], circulos[5][1]), 2, 				Scalar(0,255,0), 3, CV_AA);
+		circle(img, 	Point(circulos[6][0], circulos[6][1]), circulos[6][2],	Scalar(0,0,255), 3, CV_AA);
+		circle(img, 	Point(circulos[6][0], circulos[6][1]), 2, 				Scalar(0,255,0), 3, CV_AA);
 
-		imshow("blue", blue);		waitKey();
-		imshow("magenta", magenta);	waitKey();
-		imshow("green", green);		waitKey();
-		imshow("cyan", cyan);		waitKey();
-		imshow("yellow", yellow);	waitKey();
-		imshow("red", red);			waitKey();
-		imshow("black",black);		waitKey();
+		// imshow("blue", blue);		waitKey();
+		// imshow("magenta", magenta);	waitKey();
+		// imshow("green", green);		waitKey();
+		// imshow("cyan", cyan);		waitKey();
+		// imshow("yellow", yellow);	waitKey();
+		// imshow("red", red);			waitKey();
+		// imshow("black",black);		waitKey();
+		imshow("img",img);		waitKey();
 	}
 }
