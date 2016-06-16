@@ -31,26 +31,26 @@ void init()
 
 int calcular_posicao_base(float teta)
 {
-    int pos = -teta*10 + 1550;
-    return trava(0, pos);
+	int pos = 0.00623456790123454 * pow(teta, 2) - 9.95 * teta + 1345;
+    return pos;
 }
 
 int calcular_posicao_ombro(float teta)
 {
-    int pos = 673.33 + 8.4*teta;
-    return pos;//trava(1, pos);
+	int pos = 0.00444444444444433 * pow(teta, 2) + 8.35555555555557 * teta + 649;
+    return pos;
 }
 
 int calcular_posicao_cotovelo(float teta)
 {
-    int pos = 931 - 7.778*teta;
-    return pos;//trava(2, pos);
+	int pos = 0.0149794238683127 * pow(teta, 2) - 7.65185185185186 * teta + 803;
+    return pos;
 }
 
 int calcular_posicao_punho(float teta)
 {
-    int pos = 1441.667 + 10.278*teta;
-    return trava(3, pos);
+    int pos = -0.00277777777777781 * pow(teta, 2) + 10.1500000000000 * teta + 1503;
+    return pos;
 }
 
 double degreesToRadians(double graus){
@@ -114,16 +114,16 @@ void calcularCinematicaInversa(double posX, double posY, double posZ, double ori
 }
 
     void pegar(){
-        enviar_comando("#4P1500S100T5000", serial_retorno);
+        enviar_comando("#4P2000S100T5000", serial_retorno);
     }
     void soltar(){
-        enviar_comando("#4P2400T5000", serial_retorno);
+        enviar_comando("#4P1500S100T5000", serial_retorno);
     }
     void mover(double x, double y, double z, double phi){
 
         calcularCinematicaInversa(x, y, z, phi);
     }
     void repouso(){
-        enviar_comando("#0P500T5000#1P500T5000#2P500T5000#3P500T5000#4P500T5000", serial_retorno);
+        enviar_comando("#0P0S500#1P0S500#2P0S500#3P0S500#4P0S500", serial_retorno);
     }
 #endif
