@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #define DEBUG 1
+#define CONV 1
 
 struct Ponto {
 	double x;
@@ -17,7 +18,7 @@ using namespace cv;
 
 void capturar_ciculos(vector<Vec3f> &circulos);
 void mover_suave(Ponto source, Ponto dest);
-void init_pontos(Ponto pontos[6]);
+void init_pontos(Ponto pontos[6], vector<Vec3f> circulos);
 
 // using namespace std;
 
@@ -38,7 +39,7 @@ int main(int argc, char** argv) {
 	// } while (key != 1048683 || key == -1);
 
 	Ponto pontos[7];
-	init_pontos(pontos);
+	init_pontos(pontos, circulos);
 	if (DEBUG) printf("Mover para caneta\n");
 	// Mover para caneta
 	mover(pontos[6].x, pontos[6].y, pontos[6].z, pontos[6].phi);
@@ -78,11 +79,7 @@ void mover_suave(Ponto source, Ponto dest) {
 	}
 }
 
-// #0P1345S100	#1P1894S100	#2P2128S100	#3P1562S100
-// #0P1345S500	#1P1905S500	#2P2107S500	#3P1533S500
-
-
-void init_pontos(Ponto pontos[6]) {
+void init_pontos(Ponto pontos[6], vector<Vec3f> circulos) {
 	/*
 	 *	0 - Blue
 	 *	1 - Magenta
@@ -99,6 +96,35 @@ void init_pontos(Ponto pontos[6]) {
 	pontos[4].x = 26.5427;	pontos[4].y = 5.6418;	pontos[4].z = 15.0736;	pontos[4].phi = -3;
 	pontos[5].x = 28.8939;	pontos[5].y = 1.5142;	pontos[5].z = 16.8248;	pontos[5].phi = 8;
 	pontos[6].x = 15.9611;	pontos[6].y = 0;		pontos[6].z = 18.9398;	pontos[6].phi = 8;
+	pontos[0].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
+	pontos[0].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	pontos[0].z = pontos[6].z;
+	pontos[0].phi = pontos[6].phi;
+
+	pontos[1].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
+	pontos[1].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	pontos[1].z = pontos[6].z;
+	pontos[1].phi = pontos[6].phi;
+
+	pontos[2].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
+	pontos[2].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	pontos[2].z = pontos[6].z;
+	pontos[2].phi = pontos[6].phi;
+
+	pontos[3].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
+	pontos[3].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	pontos[3].z = pontos[6].z;
+	pontos[3].phi = pontos[6].phi;
+
+	pontos[4].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
+	pontos[4].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	pontos[4].z = pontos[6].z;
+	pontos[4].phi = pontos[6].phi;
+
+	pontos[5].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
+	pontos[5].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	pontos[5].z = pontos[6].z;
+	pontos[5].phi = pontos[6].phi;
 }
 
 void capturar_ciculos(vector<Vec3f> &circulos) {
