@@ -20,6 +20,8 @@ extern "C"{
 int serial_retorno;
 char *comando;
 
+void posicao_inicial();
+
 void init() {
 	ufrn_header();
 	serial_retorno = abrir_porta();
@@ -28,6 +30,7 @@ void init() {
 		close(serial_retorno);
 	}
 	comando = (char*) malloc(sizeof(char)*BUFFSIZE);
+	posicao_inicial();
 }
 
 
@@ -99,7 +102,7 @@ void calcularCinematicaInversa(double posX, double posY, double posZ, double ori
 	thetaOmbro = radiansToDegrees(thetaOmbro);
 	thetaCotovelo = radiansToDegrees(thetaCotovelo);
 	thetaPunho = radiansToDegrees(thetaPunho);
-	sprintf(comando, "#0P%dS100#1P%dS100#2P%dS100#3P%dS100", (int) thetaBase, (int) thetaOmbro, (int) thetaCotovelo, (int) thetaPunho);
+  	sprintf(comando, "#0P%dS100#1P%dS100#2P%dS100#3P%dS100", calcular_posicao_base(thetaBase), calcular_posicao_ombro(thetaOmbro), calcular_posicao_cotovelo(thetaCotovelo), calcular_posicao_punho(thetaPunho)); 
 
 	enviar_comando(comando, serial_retorno);
 }
@@ -120,7 +123,7 @@ void mover(double x, double y, double z, double phi){
 
 void posicao_inicial() {
 	memset(comando, 0, BUFFSIZE);
-	sprintf(comando, "#0P1345S100#2P803S100#3P1503S100#4P2500S100");
+	sprintf(comando, "#0P1345S100#1P1436S100#2P803S100#3P1503S100#4P2500S100");
 	enviar_comando(comando, serial_retorno);
 }
 

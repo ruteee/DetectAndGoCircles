@@ -32,12 +32,14 @@ int main(int argc, char** argv) {
 
 	// Detecção de circulos coloridos
 	vector<Vec3f> circulos(7);
-	// int key = 0;
-	// do {
-	// 	capturar_ciculos(circulos);
-	// 	key = waitKey(100);
-	// 	printf("Tecla: %d\n", key);
-	// } while (key != 1048683 || key == -1);
+	int key = 0;
+	do {
+		capturar_ciculos(circulos);
+		key = waitKey(500);
+		printf("Tecla: %d\n", key);
+	} while (key != 1048683 || key == -1);
+
+	posicao_inicial();
 	soltar();
 	sleep(5);
 	Ponto pontos[7];
@@ -45,7 +47,7 @@ int main(int argc, char** argv) {
 	if (DEBUG) printf("Mover para caneta\n");
 	// Mover para caneta
 	mover(pontos[6].x, pontos[6].y, pontos[6].z, pontos[6].phi);
-	sleep(5);
+	sleep(15);
 	if (DEBUG) printf("Movido para caneta\n");
 	// Pegar caneta
 	pegar();
@@ -67,7 +69,7 @@ int main(int argc, char** argv) {
 	if (DEBUG) printf("Voltou para preto\n");
 	sleep(5);
 	posicao_inicial();
-	sleep(5);
+	sleep(15);
 	repouso();
 	sleep(5);
 	if (DEBUG) printf("Encerrando\n");
@@ -98,42 +100,43 @@ void init_pontos(Ponto pontos[6], vector<Vec3f> circulos) {
 	 *	5 - Red
 	 *	6 - Black
 	 */
-	pontos[0].x = 27;		pontos[0].y = -7.9337;	pontos[0].z = 18;		pontos[0].phi = -3;
-	pontos[1].x = 30;		pontos[1].y = -4.5262;	pontos[1].z = 18;		pontos[1].phi = 8;
-	pontos[2].x = 21.8025;	pontos[2].y = 3.0641;	pontos[2].z = 18;		pontos[2].phi = 2;
-	pontos[3].x = 21.6122;	pontos[3].y = -4.2009;	pontos[3].z = 18;		pontos[3].phi = 2;
-	pontos[4].x = 26.5427;	pontos[4].y = 7.6418;	pontos[4].z = 18;		pontos[4].phi = -3;
-	pontos[5].x = 30;		pontos[5].y = 3;		pontos[5].z = 18;		pontos[5].phi = 8;
-	pontos[6].x = 15.9611;	pontos[6].y = 0;		pontos[6].z = 18;		pontos[6].phi = 8;
-	// pontos[0].x = (abs(circulos[0][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
-	// pontos[0].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
-	// pontos[0].z = pontos[6].z;
-	// pontos[0].phi = pontos[6].phi;
+	// pontos[0].x = 26;		pontos[0].y = -7.9337;	pontos[0].z = 16;		pontos[0].phi = -3;
+	// pontos[1].x = 29;		pontos[1].y = -4.5262;	pontos[1].z = 16;		pontos[1].phi = 8;
+	// pontos[2].x = 21.8025;	pontos[2].y = 3.0641;	pontos[2].z = 17;		pontos[2].phi = 2;
+	// pontos[3].x = 21.6122;	pontos[3].y = -4.2009;	pontos[3].z = 17;		pontos[3].phi = 2;
+	// pontos[4].x = 26.5427;	pontos[4].y = 7.6418;	pontos[4].z = 16;		pontos[4].phi = -3;
+	// pontos[5].x = 30;		pontos[5].y = 3;		pontos[5].z = 16;		pontos[5].phi = 8;
+	pontos[6].x = 15.9611;	pontos[6].y = 0;		pontos[6].z = 20;		pontos[6].phi = 8;
 
-	// pontos[1].x = (abs(circulos[0][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
-	// pontos[1].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
-	// pontos[1].z = pontos[6].z;
-	// pontos[1].phi = pontos[6].phi;
+	pontos[0].x = ((circulos[0][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
+	pontos[0].y = (-1)*((circulos[0][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
+	pontos[0].z = pontos[6].z - 3.3;
+	pontos[0].phi = pontos[6].phi;
 
-	// pontos[2].x = (abs(circulos[0][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
-	// pontos[2].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
-	// pontos[2].z = pontos[6].z;
-	// pontos[2].phi = pontos[6].phi;
+	pontos[1].x = ((circulos[1][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
+	pontos[1].y = (-1)*((circulos[1][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
+	pontos[1].z = pontos[6].z - 3.3;
+	pontos[1].phi = pontos[6].phi;
 
-	// pontos[3].x = (abs(circulos[0][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
-	// pontos[3].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
-	// pontos[3].z = pontos[6].z;
-	// pontos[3].phi = pontos[6].phi;
+	pontos[2].x = ((circulos[2][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
+	pontos[2].y = (-1)*((circulos[2][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
+	pontos[2].z = pontos[6].z - 3.3;
+	pontos[2].phi = pontos[6].phi;
 
-	// pontos[4].x = (abs(circulos[0][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
-	// pontos[4].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
-	// pontos[4].z = pontos[6].z;
-	// pontos[4].phi = pontos[6].phi;
+	pontos[3].x = ((circulos[3][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
+	pontos[3].y = (-1)*((circulos[3][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
+	pontos[3].z = pontos[6].z - 3.3;
+	pontos[3].phi = pontos[6].phi;
 
-	// pontos[5].x = (abs(circulos[0][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
-	// pontos[5].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
-	// pontos[5].z = pontos[6].z;
-	// pontos[5].phi = pontos[6].phi;
+	pontos[4].x = ((circulos[4][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
+	pontos[4].y = (-1)*((circulos[4][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
+	pontos[4].z = pontos[6].z - 3.3;
+	pontos[4].phi = pontos[6].phi;
+
+	pontos[5].x = ((circulos[5][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
+	pontos[5].y = (-1)*((circulos[5][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
+	pontos[5].z = pontos[6].z - 3.3;
+	pontos[5].phi = pontos[6].phi;
 }
 
 void capturar_ciculos(vector<Vec3f> &circulos) {
@@ -188,31 +191,31 @@ void capturar_ciculos(vector<Vec3f> &circulos) {
 //--------------------------------Circles-------------------------------------------------------//
 	vector<Vec3f> circles(1);
 	if (DEBUG) printf("Detecção de Cores\n");
-	HoughCircles(blue, circles, CV_HOUGH_GRADIENT, 1, 10, 100, 30, 1, 25);
+	HoughCircles(blue, circles, CV_HOUGH_GRADIENT, 1, 90, 100, 30, 1, 25);
 	circulos[0] = circles[0];
 	if (DEBUG) printf("Azul: %lu\n", circles.size());
 
-	HoughCircles(magenta, circles, CV_HOUGH_GRADIENT, 1, 10, 100, 30, 1, 25);
+	HoughCircles(magenta, circles, CV_HOUGH_GRADIENT, 1, 90, 100, 30, 1, 25);
 	circulos[1] = circles[0];
 	if (DEBUG) printf("Mag: %lu\n", circles.size());
 
-	HoughCircles(green, circles, CV_HOUGH_GRADIENT, 1, 10, 100, 30, 1, 25);
+	HoughCircles(green, circles, CV_HOUGH_GRADIENT, 1, 90, 100, 30, 1, 25);
 	circulos[2] = circles[0];
 	if (DEBUG) printf("Verde: %lu\n", circles.size());
 
-	HoughCircles(cyan, circles, CV_HOUGH_GRADIENT, 1, 10, 100, 30, 1, 25);
+	HoughCircles(cyan, circles, CV_HOUGH_GRADIENT, 1, 90, 100, 30, 1, 25);
 	circulos[3] = circles[0];
 	if (DEBUG) printf("Cyan: %lu\n", circles.size());
 
-	HoughCircles(yellow, circles, CV_HOUGH_GRADIENT, 1, 10, 100, 30, 1, 25);
+	HoughCircles(yellow, circles, CV_HOUGH_GRADIENT, 1, 90, 100, 30, 1, 25);
 	circulos[4] = circles[0];
 	if (DEBUG) printf("Ye: %lu\n", circles.size());
 
-	HoughCircles(red, circles, CV_HOUGH_GRADIENT, 1, 10, 100, 30, 1, 25);
+	HoughCircles(red, circles, CV_HOUGH_GRADIENT, 1, 90, 100, 30, 1, 25);
 	circulos[5] = circles[0];
 	if (DEBUG) printf("Red: %lu\n", circles.size());
 
-	HoughCircles(black, circles, CV_HOUGH_GRADIENT, 1, 10, 100, 30, 1, 25);
+	HoughCircles(black, circles, CV_HOUGH_GRADIENT, 1, 90, 100, 30, 1, 25);
 	circulos[6] = circles[0];
 	if (DEBUG) printf("Black: %lu\n", circles.size());
 	if (DEBUG) printf("---------------------\n");
