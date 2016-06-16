@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
 	}
 
 	// Detecção de circulos coloridos
-	// vector<Vec3f> circulos(7);
+	vector<Vec3f> circulos(7);
 	// int key = 0;
 	// do {
 	// 	capturar_ciculos(circulos);
