@@ -29,13 +29,13 @@ int main(int argc, char** argv) {
 	}
 
 	// Detecção de circulos coloridos
-	vector<Vec3f> circulos(7);
-	int key = 0;
-	do {
-		capturar_ciculos(circulos);
-		key = waitKey(100);
-		printf("Tecla: %d\n", key);
-	} while (key != 1048683 || key == -1);
+	// vector<Vec3f> circulos(7);
+	// int key = 0;
+	// do {
+	// 	capturar_ciculos(circulos);
+	// 	key = waitKey(100);
+	// 	printf("Tecla: %d\n", key);
+	// } while (key != 1048683 || key == -1);
 
 	Ponto pontos[7];
 	init_pontos(pontos);
@@ -67,15 +67,20 @@ void mover_suave(Ponto source, Ponto dest) {
 	Ponto p;
 	p.x = (dest.x - source.x) / 10.0;
 	p.y = (dest.y - source.y) / 10.0;
-	p.z = dest.z;
-	p.phi = dest.phi;
+	p.z = (dest.z - source.z) / 10.0;
+	p.phi = (dest.phi - source.phi) / 10.0;
 
 	for (int i = 0; i < 10; i++) {
 		if (DEBUG) printf("\tPasso i: %d\n", i);
-		//mover(source.x + p.x * (i+1), source.y + p.y * (i+1), p.z, p.phi);
-		usleep(500000);
+		if (DEBUG) printf("\tx: %lf\ty: %lf\tz: %lf\tphi: %lf\n", source.x + p.x * (i+1), source.y + p.y * (i+1), source.z + p.z * (i+1), source.phi + p.phi * (i+1));
+		mover(source.x + p.x * (i+1), source.y + p.y * (i+1), source.z + p.z * (i+1), source.phi + p.phi * (i+1));
+		sleep(2);
 	}
 }
+
+// #0P1345S100	#1P1894S100	#2P2128S100	#3P1562S100
+// #0P1345S500	#1P1905S500	#2P2107S500	#3P1533S500
+
 
 void init_pontos(Ponto pontos[6]) {
 	/*
@@ -87,13 +92,13 @@ void init_pontos(Ponto pontos[6]) {
 	 *	5 - Red
 	 *	6 - Black
 	 */
-	pontos[0].x = 33;	pontos[0].y = -2;	pontos[0].z = 16;	pontos[0].phi = 0;
-	pontos[1].x = 27.5;	pontos[1].y = -5;	pontos[1].z = 13;	pontos[1].phi = 0;
-	pontos[2].x = 21;	pontos[2].y = -2;	pontos[2].z = 12;	pontos[2].phi = 0;
-	pontos[3].x = 21;	pontos[3].y = 3.5;	pontos[3].z = 12;	pontos[3].phi = 0;
-	pontos[4].x = 27;	pontos[4].y = 7;	pontos[4].z = 13.5;	pontos[4].phi = 0;
-	pontos[5].x = 33;	pontos[5].y = 5;	pontos[5].z = 16;	pontos[5].phi = 0;
-	pontos[6].x = 33;	pontos[6].y = 6;	pontos[6].z = 16;	pontos[6].phi = 0;
+	pontos[0].x = 25.9499;	pontos[0].y = -7.9337;	pontos[0].z = 15.0736;	pontos[0].phi = -3;
+	pontos[1].x = 28.5772;	pontos[1].y = -4.5262;	pontos[1].z = 16.8248;	pontos[1].phi = 8;
+	pontos[2].x = 21.8025;	pontos[2].y = 3.0641;	pontos[2].z = 17.4962;	pontos[2].phi = 2;
+	pontos[3].x = 21.6122;	pontos[3].y = -4.2009;	pontos[3].z = 17.4962;	pontos[3].phi = 2;
+	pontos[4].x = 26.5427;	pontos[4].y = 5.6418;	pontos[4].z = 15.0736;	pontos[4].phi = -3;
+	pontos[5].x = 28.8939;	pontos[5].y = 1.5142;	pontos[5].z = 16.8248;	pontos[5].phi = 8;
+	pontos[6].x = 15.9611;	pontos[6].y = 0;		pontos[6].z = 18.9398;	pontos[6].phi = 8;
 }
 
 void capturar_ciculos(vector<Vec3f> &circulos) {
