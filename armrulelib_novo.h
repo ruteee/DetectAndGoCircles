@@ -33,30 +33,30 @@ void init() {
 
 int calcular_posicao_base(float teta) {
 	int pos = 0.00623456790123454 * pow(teta, 2) - 9.95 * teta + 1345;
-	return pos;
+	return trava(0, pos);
 }
 
 int calcular_posicao_ombro(float teta) {
 	int pos = 0.00444444444444433 * pow(teta, 2) + 8.35555555555557 * teta + 649;
-	return pos;
+	return pos;//trava(1, pos);
 }
 
 int calcular_posicao_cotovelo(float teta) {
 	int pos = 0.0149794238683127 * pow(teta, 2) - 7.65185185185186 * teta + 803;
-	return pos;
+	return pos;//trava(2, pos);
 }
 
 int calcular_posicao_punho(float teta) {
 	int pos = -0.00277777777777781 * pow(teta, 2) + 10.1500000000000 * teta + 1503;
-	return pos;
+	return trava(3, pos);
 }
 
 double degreesToRadians(double graus) {
-	return (graus * 3.14)/180.0;
+	return (graus * M_PI)/180.0;
 }
 
 double radiansToDegrees(double rad) {
-	return ((rad * 180.0)/3.14);
+	return ((rad * 180.0)/M_PI);
 }
 
 void calcularCinematicaInversa(double posX, double posY, double posZ, double orientacao) {
@@ -99,24 +99,31 @@ void calcularCinematicaInversa(double posX, double posY, double posZ, double ori
 	thetaOmbro = radiansToDegrees(thetaOmbro);
 	thetaCotovelo = radiansToDegrees(thetaCotovelo);
 	thetaPunho = radiansToDegrees(thetaPunho);
-	sprintf(comando, "#0P%dS100#1P%dS100#2P%dS100#3P%dS100", calcular_posicao_base(thetaBase), calcular_posicao_ombro(thetaOmbro), calcular_posicao_cotovelo(thetaCotovelo), calcular_posicao_punho(thetaPunho));
-	printf("%s\n",comando);
+	sprintf(comando, "#0P%dS100#1P%dS100#2P%dS100#3P%dS100", (int) thetaBase, (int) thetaOmbro, (int) thetaCotovelo, (int) thetaPunho);
+
 	enviar_comando(comando, serial_retorno);
 }
 
 void pegar() {
 	memset(comando, 0, BUFFSIZE);
-	sprintf(comando, "#4P2000S250T5000");
+	sprintf(comando, "#4P2000S100T5000");
 	enviar_comando(comando, serial_retorno);
 }
 void soltar() {
 	memset(comando, 0, BUFFSIZE);
-	sprintf(comando, "#4P1200S250");
+	sprintf(comando, "#4P1500S100T5000");
 	enviar_comando(comando, serial_retorno);
 }
 void mover(double x, double y, double z, double phi){
 	calcularCinematicaInversa(x, y, z, phi);
 }
+
+void posicao_inicial() {
+	memset(comando, 0, BUFFSIZE);
+	sprintf(comando, "#0P1345S100#2P803S100#3P1503S100#4P2500S100");
+	enviar_comando(comando, serial_retorno);
+}
+
 void repouso() {
 	memset(comando, 0, BUFFSIZE);
 	sprintf(comando, "#0P0000S500#1P0000S500#2P0000S500#3P0000S500#4P0000S500");

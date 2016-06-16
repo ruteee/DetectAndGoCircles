@@ -5,7 +5,8 @@
 #include <stdio.h>
 
 #define DEBUG 1
-#define CONV 1
+#define CONV_X 0.108108108
+#define CONV_Y 0.106382979
 
 struct Ponto {
 	double x;
@@ -62,8 +63,14 @@ int main(int argc, char** argv) {
 	// Mover para preto
 	if (DEBUG) printf("Voltar para preto\n");
 	mover_suave(p_ant, pontos[6]);
-
+	soltar();
 	if (DEBUG) printf("Voltou para preto\n");
+	sleep(5);
+	posicao_inicial();
+	sleep(5);
+	repouso();
+	sleep(5);
+	if (DEBUG) printf("Encerrando\n");
 }
 
 void mover_suave(Ponto source, Ponto dest) {
@@ -91,40 +98,40 @@ void init_pontos(Ponto pontos[6], vector<Vec3f> circulos) {
 	 *	5 - Red
 	 *	6 - Black
 	 */
-	pontos[0].x = 25.9499;	pontos[0].y = -7.9337;	pontos[0].z = 16;	pontos[0].phi = -3;
-	pontos[1].x = 30;	pontos[1].y = -4.5262;	pontos[1].z = 16;	pontos[1].phi = 8;
-	pontos[2].x = 21.8025;	pontos[2].y = 3.0641;	pontos[2].z = 16;	pontos[2].phi = 2;
-	pontos[3].x = 21.6122;	pontos[3].y = -4.2009;	pontos[3].z = 16;	pontos[3].phi = 2;
-	pontos[4].x = 26.5427;	pontos[4].y = 5.6418;	pontos[4].z = 16;	pontos[4].phi = -3;
-	pontos[5].x = 30;	pontos[5].y = 1.5142;	pontos[5].z = 16;	pontos[5].phi = 8;
-	pontos[6].x = 15.9611;	pontos[6].y = 0;		pontos[6].z = 18.9398;	pontos[6].phi = 8;
-	// pontos[0].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
-	// pontos[0].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	pontos[0].x = 27;		pontos[0].y = -7.9337;	pontos[0].z = 18;		pontos[0].phi = -3;
+	pontos[1].x = 30;		pontos[1].y = -4.5262;	pontos[1].z = 18;		pontos[1].phi = 8;
+	pontos[2].x = 21.8025;	pontos[2].y = 3.0641;	pontos[2].z = 18;		pontos[2].phi = 2;
+	pontos[3].x = 21.6122;	pontos[3].y = -4.2009;	pontos[3].z = 18;		pontos[3].phi = 2;
+	pontos[4].x = 26.5427;	pontos[4].y = 7.6418;	pontos[4].z = 18;		pontos[4].phi = -3;
+	pontos[5].x = 30;		pontos[5].y = 3;		pontos[5].z = 18;		pontos[5].phi = 8;
+	pontos[6].x = 15.9611;	pontos[6].y = 0;		pontos[6].z = 18;		pontos[6].phi = 8;
+	// pontos[0].x = (abs(circulos[0][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
+	// pontos[0].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
 	// pontos[0].z = pontos[6].z;
 	// pontos[0].phi = pontos[6].phi;
 
-	// pontos[1].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
-	// pontos[1].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	// pontos[1].x = (abs(circulos[0][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
+	// pontos[1].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
 	// pontos[1].z = pontos[6].z;
 	// pontos[1].phi = pontos[6].phi;
 
-	// pontos[2].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
-	// pontos[2].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	// pontos[2].x = (abs(circulos[0][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
+	// pontos[2].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
 	// pontos[2].z = pontos[6].z;
 	// pontos[2].phi = pontos[6].phi;
 
-	// pontos[3].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
-	// pontos[3].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	// pontos[3].x = (abs(circulos[0][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
+	// pontos[3].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
 	// pontos[3].z = pontos[6].z;
 	// pontos[3].phi = pontos[6].phi;
 
-	// pontos[4].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
-	// pontos[4].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	// pontos[4].x = (abs(circulos[0][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
+	// pontos[4].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
 	// pontos[4].z = pontos[6].z;
 	// pontos[4].phi = pontos[6].phi;
 
-	// pontos[5].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
-	// pontos[5].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	// pontos[5].x = (abs(circulos[0][0] - circulos[6][0]) * CONV_X) + pontos[6].x;
+	// pontos[5].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV_Y) + pontos[6].y;
 	// pontos[5].z = pontos[6].z;
 	// pontos[5].phi = pontos[6].phi;
 }
