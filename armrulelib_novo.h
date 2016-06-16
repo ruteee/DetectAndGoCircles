@@ -33,30 +33,30 @@ void init() {
 
 int calcular_posicao_base(float teta) {
 	int pos = 0.00623456790123454 * pow(teta, 2) - 9.95 * teta + 1345;
-	return trava(0, pos);
+	return pos;
 }
 
 int calcular_posicao_ombro(float teta) {
 	int pos = 0.00444444444444433 * pow(teta, 2) + 8.35555555555557 * teta + 649;
-	return pos;//trava(1, pos);
+	return pos;
 }
 
 int calcular_posicao_cotovelo(float teta) {
 	int pos = 0.0149794238683127 * pow(teta, 2) - 7.65185185185186 * teta + 803;
-	return pos;//trava(2, pos);
+	return pos;
 }
 
 int calcular_posicao_punho(float teta) {
 	int pos = -0.00277777777777781 * pow(teta, 2) + 10.1500000000000 * teta + 1503;
-	return trava(3, pos);
+	return pos;
 }
 
 double degreesToRadians(double graus) {
-	return (graus * M_PI)/180.0;
+	return (graus * 3.14)/180.0;
 }
 
 double radiansToDegrees(double rad) {
-	return ((rad * 180.0)/M_PI);
+	return ((rad * 180.0)/3.14);
 }
 
 void calcularCinematicaInversa(double posX, double posY, double posZ, double orientacao) {
@@ -99,19 +99,19 @@ void calcularCinematicaInversa(double posX, double posY, double posZ, double ori
 	thetaOmbro = radiansToDegrees(thetaOmbro);
 	thetaCotovelo = radiansToDegrees(thetaCotovelo);
 	thetaPunho = radiansToDegrees(thetaPunho);
-	sprintf(comando, "#0P%dS100#1P%dS100#2P%dS100#3P%dS100", (int) thetaBase, (int) thetaOmbro, (int) thetaCotovelo, (int) thetaPunho);
-
+	sprintf(comando, "#0P%dS100#1P%dS100#2P%dS100#3P%dS100", calcular_posicao_base(thetaBase), calcular_posicao_ombro(thetaOmbro), calcular_posicao_cotovelo(thetaCotovelo), calcular_posicao_punho(thetaPunho));
+	printf("%s\n",comando);
 	enviar_comando(comando, serial_retorno);
 }
 
 void pegar() {
 	memset(comando, 0, BUFFSIZE);
-	sprintf(comando, "#4P2000S100T5000");
+	sprintf(comando, "#4P2000S250T5000");
 	enviar_comando(comando, serial_retorno);
 }
 void soltar() {
 	memset(comando, 0, BUFFSIZE);
-	sprintf(comando, "#4P1500S100T5000");
+	sprintf(comando, "#4P1200S250");
 	enviar_comando(comando, serial_retorno);
 }
 void mover(double x, double y, double z, double phi){

@@ -37,7 +37,8 @@ int main(int argc, char** argv) {
 	// 	key = waitKey(100);
 	// 	printf("Tecla: %d\n", key);
 	// } while (key != 1048683 || key == -1);
-
+	soltar();
+	sleep(5);
 	Ponto pontos[7];
 	init_pontos(pontos, circulos);
 	if (DEBUG) printf("Mover para caneta\n");
@@ -46,11 +47,12 @@ int main(int argc, char** argv) {
 	sleep(5);
 	if (DEBUG) printf("Movido para caneta\n");
 	// Pegar caneta
-
+	pegar();
+	sleep(5);
 	if (DEBUG) printf("Iniciar sequência\n");
 	Ponto p_ant = pontos[6];
 	// Mover entre cada ponto
-	for (int i = 1; i < 6; i++) {
+	for (int i = 1; i < 7; i++) {
 		Ponto p = pontos[atoi(argv[i]) - 1];
 		if (DEBUG) printf("Ponto i: %d\n", i);
 		mover_suave(p_ant, p);
@@ -75,7 +77,7 @@ void mover_suave(Ponto source, Ponto dest) {
 		if (DEBUG) printf("\tPasso i: %d\n", i);
 		if (DEBUG) printf("\tx: %lf\ty: %lf\tz: %lf\tphi: %lf\n", source.x + p.x * (i+1), source.y + p.y * (i+1), source.z + p.z * (i+1), source.phi + p.phi * (i+1));
 		mover(source.x + p.x * (i+1), source.y + p.y * (i+1), source.z + p.z * (i+1), source.phi + p.phi * (i+1));
-		sleep(2);
+		usleep(500000);
 	}
 }
 
@@ -89,42 +91,42 @@ void init_pontos(Ponto pontos[6], vector<Vec3f> circulos) {
 	 *	5 - Red
 	 *	6 - Black
 	 */
-	pontos[0].x = 25.9499;	pontos[0].y = -7.9337;	pontos[0].z = 15.0736;	pontos[0].phi = -3;
-	pontos[1].x = 28.5772;	pontos[1].y = -4.5262;	pontos[1].z = 16.8248;	pontos[1].phi = 8;
-	pontos[2].x = 21.8025;	pontos[2].y = 3.0641;	pontos[2].z = 17.4962;	pontos[2].phi = 2;
-	pontos[3].x = 21.6122;	pontos[3].y = -4.2009;	pontos[3].z = 17.4962;	pontos[3].phi = 2;
-	pontos[4].x = 26.5427;	pontos[4].y = 5.6418;	pontos[4].z = 15.0736;	pontos[4].phi = -3;
-	pontos[5].x = 28.8939;	pontos[5].y = 1.5142;	pontos[5].z = 16.8248;	pontos[5].phi = 8;
+	pontos[0].x = 25.9499;	pontos[0].y = -7.9337;	pontos[0].z = 16;	pontos[0].phi = -3;
+	pontos[1].x = 30;	pontos[1].y = -4.5262;	pontos[1].z = 16;	pontos[1].phi = 8;
+	pontos[2].x = 21.8025;	pontos[2].y = 3.0641;	pontos[2].z = 16;	pontos[2].phi = 2;
+	pontos[3].x = 21.6122;	pontos[3].y = -4.2009;	pontos[3].z = 16;	pontos[3].phi = 2;
+	pontos[4].x = 26.5427;	pontos[4].y = 5.6418;	pontos[4].z = 16;	pontos[4].phi = -3;
+	pontos[5].x = 30;	pontos[5].y = 1.5142;	pontos[5].z = 16;	pontos[5].phi = 8;
 	pontos[6].x = 15.9611;	pontos[6].y = 0;		pontos[6].z = 18.9398;	pontos[6].phi = 8;
-	pontos[0].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
-	pontos[0].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
-	pontos[0].z = pontos[6].z;
-	pontos[0].phi = pontos[6].phi;
+	// pontos[0].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
+	// pontos[0].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	// pontos[0].z = pontos[6].z;
+	// pontos[0].phi = pontos[6].phi;
 
-	pontos[1].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
-	pontos[1].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
-	pontos[1].z = pontos[6].z;
-	pontos[1].phi = pontos[6].phi;
+	// pontos[1].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
+	// pontos[1].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	// pontos[1].z = pontos[6].z;
+	// pontos[1].phi = pontos[6].phi;
 
-	pontos[2].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
-	pontos[2].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
-	pontos[2].z = pontos[6].z;
-	pontos[2].phi = pontos[6].phi;
+	// pontos[2].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
+	// pontos[2].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	// pontos[2].z = pontos[6].z;
+	// pontos[2].phi = pontos[6].phi;
 
-	pontos[3].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
-	pontos[3].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
-	pontos[3].z = pontos[6].z;
-	pontos[3].phi = pontos[6].phi;
+	// pontos[3].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
+	// pontos[3].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	// pontos[3].z = pontos[6].z;
+	// pontos[3].phi = pontos[6].phi;
 
-	pontos[4].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
-	pontos[4].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
-	pontos[4].z = pontos[6].z;
-	pontos[4].phi = pontos[6].phi;
+	// pontos[4].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
+	// pontos[4].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	// pontos[4].z = pontos[6].z;
+	// pontos[4].phi = pontos[6].phi;
 
-	pontos[5].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
-	pontos[5].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
-	pontos[5].z = pontos[6].z;
-	pontos[5].phi = pontos[6].phi;
+	// pontos[5].x = (abs(circulos[0][0] - circulos[6][0]) * CONV) + pontos[6].x;
+	// pontos[5].y = (-1)*(abs(circulos[0][1] - circulos[6][1]) * CONV) + pontos[6].y;
+	// pontos[5].z = pontos[6].z;
+	// pontos[5].phi = pontos[6].phi;
 }
 
 void capturar_ciculos(vector<Vec3f> &circulos) {
