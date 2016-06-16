@@ -1,1 +1,3 @@
- g++ `pkg-config --cflags opencv` -o circles houghcircles.cpp `pkg-config --libs opencv`
+g++ `pkg-config --cflags opencv` -o circles houghcircles.cpp `pkg-config --libs opencv`
+
+g++ `pkg-config --cflags opencv` armrulelib_novo.h main.cpp -o color_link lib/libufrn_lynx.a `pkg-config --libs opencv`

@@ -1,26 +1,99 @@
+#include <stdlib.h>
+#include "armrulelib_novo.h"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include <stdio.h>
-#include <iostream>
 
 #define DEBUG 1
 
-using namespace cv;
-using namespace std;
+struct Ponto {
+	double x;
+	double y;
+	double z;
+	double phi;
+};
 
-static void help()
-{
-    cout << "\nThis program demonstrates circle finding with the Hough transform.\n"
-            "Usage:\n"
-            "./houghcircles <image_name>, Default is pic1.png\n" << endl;
-}
+using namespace cv;
 
 void capturar_ciculos(vector<Vec3f> &circulos);
+void mover_suave(Ponto source, Ponto dest);
+void init_pontos(Ponto pontos[6]);
+
+// using namespace std;
 
 int main(int argc, char** argv) {
-  vector<Vec3f> circulos(7);
-  capturar_ciculos(circulos);
-  return 0;
+	init();
+	if (argc < 7) {
+		printf("Quantidade de argumentos insuficiente: %d", argc);
+		exit(1);
+	}
+
+	// Detecção de circulos coloridos
+	vector<Vec3f> circulos(7);
+	int key = 0;
+	do {
+		capturar_ciculos(circulos);
+		key = waitKey(100);
+		printf("Tecla: %d\n", key);
+	} while (key != 1048683 || key == -1);
+
+	Ponto pontos[7];
+	init_pontos(pontos);
+	if (DEBUG) printf("Mover para caneta\n");
+	// Mover para caneta
+	mover(pontos[6].x, pontos[6].y, pontos[6].z, pontos[6].phi);
+	sleep(5);
+	if (DEBUG) printf("Movido para caneta\n");
+	// Pegar caneta
+
+	if (DEBUG) printf("Iniciar sequência\n");
+	Ponto p_ant = pontos[6];
+	// Mover entre cada ponto
+	for (int i = 1; i < 6; i++) {
+		Ponto p = pontos[atoi(argv[i]) - 1];
+		if (DEBUG) printf("Ponto i: %d\n", i);
+		mover_suave(p_ant, p);
+		p_ant = p;
+	}
+
+	// Mover para preto
+	if (DEBUG) printf("Voltar para preto\n");
+	mover_suave(p_ant, pontos[6]);
+
+	if (DEBUG) printf("Voltou para preto\n");
+}
+
+void mover_suave(Ponto source, Ponto dest) {
+	Ponto p;
+	p.x = (dest.x - source.x) / 10.0;
+	p.y = (dest.y - source.y) / 10.0;
+	p.z = dest.z;
+	p.phi = dest.phi;
+
+	for (int i = 0; i < 10; i++) {
+		if (DEBUG) printf("\tPasso i: %d\n", i);
+		//mover(source.x + p.x * (i+1), source.y + p.y * (i+1), p.z, p.phi);
+		usleep(500000);
+	}
+}
+
+void init_pontos(Ponto pontos[6]) {
+	/*
+	 *	0 - Blue
+	 *	1 - Magenta
+	 *	2 - Green
+	 *	3 - Cyan
+	 *	4 - Yellow
+	 *	5 - Red
+	 *	6 - Black
+	 */
+	pontos[0].x = 33;	pontos[0].y = -2;	pontos[0].z = 16;	pontos[0].phi = 0;
+	pontos[1].x = 27.5;	pontos[1].y = -5;	pontos[1].z = 13;	pontos[1].phi = 0;
+	pontos[2].x = 21;	pontos[2].y = -2;	pontos[2].z = 12;	pontos[2].phi = 0;
+	pontos[3].x = 21;	pontos[3].y = 3.5;	pontos[3].z = 12;	pontos[3].phi = 0;
+	pontos[4].x = 27;	pontos[4].y = 7;	pontos[4].z = 13.5;	pontos[4].phi = 0;
+	pontos[5].x = 33;	pontos[5].y = 5;	pontos[5].z = 16;	pontos[5].phi = 0;
+	pontos[6].x = 33;	pontos[6].y = 6;	pontos[6].z = 16;	pontos[6].phi = 0;
 }
 
 void capturar_ciculos(vector<Vec3f> &circulos) {
@@ -39,14 +112,13 @@ void capturar_ciculos(vector<Vec3f> &circulos) {
 	Mat hsv_img;
 	capture = cvCaptureFromCAM(CV_CAP_ANY); //0=default, -1=any camera, 1..99=your camera
 	if (!capture) {
-		cout << "No camera detected" << endl;
+		printf("No camera detected\n");
 	}
 	// img = imread(f, 1);
 	img = cvQueryFrame(capture);
 
-	imshow("Camera", img);
-	waitKey(0);
-	// cvReleaseCapture( &capture );
+	// imshow("Camera", img);
+
 	GaussianBlur(img, img_new,  Size(9, 9), 0.5, 0.5);
 	cvtColor(img_new, hsv_img, COLOR_BGR2HSV);
 
@@ -75,35 +147,35 @@ void capturar_ciculos(vector<Vec3f> &circulos) {
 //-------------------------------Fim - Cores---------------------------------------------------- //
 //--------------------------------Circles-------------------------------------------------------//
 	vector<Vec3f> circles(1);
-	printf("Detecção de Cores\n");
+	if (DEBUG) printf("Detecção de Cores\n");
 	HoughCircles(blue, circles, CV_HOUGH_GRADIENT, 1, 10, 100, 30, 1, 25);
 	circulos[0] = circles[0];
-	printf("Azul: %lu\n", circles.size());
+	if (DEBUG) printf("Azul: %lu\n", circles.size());
 
 	HoughCircles(magenta, circles, CV_HOUGH_GRADIENT, 1, 10, 100, 30, 1, 25);
 	circulos[1] = circles[0];
-	printf("Mag: %lu\n", circles.size());
+	if (DEBUG) printf("Mag: %lu\n", circles.size());
 
 	HoughCircles(green, circles, CV_HOUGH_GRADIENT, 1, 10, 100, 30, 1, 25);
 	circulos[2] = circles[0];
-	printf("Verde: %lu\n", circles.size());
+	if (DEBUG) printf("Verde: %lu\n", circles.size());
 
 	HoughCircles(cyan, circles, CV_HOUGH_GRADIENT, 1, 10, 100, 30, 1, 25);
 	circulos[3] = circles[0];
-	printf("Cyan: %lu\n", circles.size());
+	if (DEBUG) printf("Cyan: %lu\n", circles.size());
 
 	HoughCircles(yellow, circles, CV_HOUGH_GRADIENT, 1, 10, 100, 30, 1, 25);
 	circulos[4] = circles[0];
-	printf("Ye: %lu\n", circles.size());
+	if (DEBUG) printf("Ye: %lu\n", circles.size());
 
 	HoughCircles(red, circles, CV_HOUGH_GRADIENT, 1, 10, 100, 30, 1, 25);
 	circulos[5] = circles[0];
-	printf("Red: %lu\n", circles.size());
+	if (DEBUG) printf("Red: %lu\n", circles.size());
 
 	HoughCircles(black, circles, CV_HOUGH_GRADIENT, 1, 10, 100, 30, 1, 25);
 	circulos[6] = circles[0];
-	printf("Black: %lu\n", circles.size());
-	printf("---------------------\n");
+	if (DEBUG) printf("Black: %lu\n", circles.size());
+	if (DEBUG) printf("---------------------\n");
 //-------------------------------Fim - Circles-------------------------------------------//
 	if (DEBUG) {
 		// Janelas com imagens
@@ -122,6 +194,7 @@ void capturar_ciculos(vector<Vec3f> &circulos) {
 		circle(img, 	Point(circulos[6][0], circulos[6][1]), circulos[6][2],	Scalar(0,0,255), 3, CV_AA);
 		circle(img, 	Point(circulos[6][0], circulos[6][1]), 2, 				Scalar(0,255,0), 3, CV_AA);
 
-		imshow("img",img);		waitKey();
+		imshow("img",img);
 	}
+	cvReleaseCapture( &capture );
 }
